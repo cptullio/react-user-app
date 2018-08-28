@@ -20,7 +20,6 @@ import {
   Row,
   Table,
 } from 'reactstrap';
-import Widget03 from '../../views/Widgets/Widget03'
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 
@@ -225,61 +224,8 @@ const cardChartOpts4 = {
   },
 };
 
-// Social Box Chart
-const socialBoxData = [
-  { data: [65, 59, 84, 84, 51, 55, 40], label: 'facebook' },
-  { data: [1, 13, 9, 17, 34, 41, 38], label: 'twitter' },
-  { data: [78, 81, 80, 45, 34, 12, 40], label: 'linkedin' },
-  { data: [35, 23, 56, 22, 97, 23, 64], label: 'google' },
-];
 
-const makeSocialBoxData = (dataSetNo) => {
-  const dataset = socialBoxData[dataSetNo];
-  const data = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [
-      {
-        backgroundColor: 'rgba(255,255,255,.1)',
-        borderColor: 'rgba(255,255,255,.55)',
-        pointHoverBackgroundColor: '#fff',
-        borderWidth: 2,
-        data: dataset.data,
-        label: dataset.label,
-      },
-    ],
-  };
-  return () => data;
-};
 
-const socialChartOpts = {
-  tooltips: {
-    enabled: false,
-    custom: CustomTooltips
-  },
-  responsive: true,
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-  scales: {
-    xAxes: [
-      {
-        display: false,
-      }],
-    yAxes: [
-      {
-        display: false,
-      }],
-  },
-  elements: {
-    point: {
-      radius: 0,
-      hitRadius: 10,
-      hoverRadius: 4,
-      hoverBorderWidth: 3,
-    },
-  },
-};
 
 // sparkline charts
 const sparkLineChartData = [
@@ -632,79 +578,6 @@ class Dashboard extends Component {
                 </Row>
               </CardFooter>
             </Card>
-          </Col>
-        </Row>
-
-        <Row>
-          <Col xs="6" sm="6" lg="3">
-            <Widget03 dataBox={() => ({ variant: 'facebook', friends: '89k', feeds: '459' })} >
-              <div className="chart-wrapper">
-                <Line data={makeSocialBoxData(0)} options={socialChartOpts} height={90} />
-              </div>
-            </Widget03>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-twitter">
-                <i className="fa fa-twitter"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(1)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">973k</div>
-                  <div className="text-uppercase text-muted small">followers</div>
-                </div>
-                <div>
-                  <div className="text-value">1.792</div>
-                  <div className="text-uppercase text-muted small">tweets</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-linkedin">
-                <i className="fa fa-linkedin"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(2)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">500+</div>
-                  <div className="text-uppercase text-muted small">contacts</div>
-                </div>
-                <div>
-                  <div className="text-value">292</div>
-                  <div className="text-uppercase text-muted small">feeds</div>
-                </div>
-              </div>
-            </div>
-          </Col>
-
-          <Col xs="6" sm="6" lg="3">
-            <div className="brand-card">
-              <div className="brand-card-header bg-google-plus">
-                <i className="fa fa-google-plus"></i>
-                <div className="chart-wrapper">
-                  <Line data={makeSocialBoxData(3)} options={socialChartOpts} height={90} />
-                </div>
-              </div>
-              <div className="brand-card-body">
-                <div>
-                  <div className="text-value">894</div>
-                  <div className="text-uppercase text-muted small">followers</div>
-                </div>
-                <div>
-                  <div className="text-value">92</div>
-                  <div className="text-uppercase text-muted small">circles</div>
-                </div>
-              </div>
-            </div>
           </Col>
         </Row>
 

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import {  DropdownItem, DropdownMenu, DropdownToggle, Nav } from 'reactstrap';
 import PropTypes from 'prop-types';
+import {  AppHeaderDropdown,  AppSidebarToggler } from '@coreui/react';
 
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import {  Redirect } from 'react-router-dom';
+import Auth from '../../Auth';
 
 const propTypes = {
   children: PropTypes.node,
@@ -10,18 +12,37 @@ const propTypes = {
 
 const defaultProps = {};
 
-class DefaultHeader extends Component {
-  render() {
 
+
+class DefaultHeader extends Component {
+  state = {
+    redirect: false
+  }
+  constructor(){
+    super()
+    this.logout = this.logout.bind(this);
+  }
+  
+  logout(){
+    Auth.signout();
+    this.setState({ redirect: true });
+  }
+
+  render() {
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+    const { redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to='/'/>;
+    }
 
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <a  class="navbar-brand">
-          <span class="navbar-brand-full" width="89" height="25">My Experiment</span>  
-          <span class="navbar-brand-minimized" width="30" height="30">MyE</span>
+        <a  className="navbar-brand">
+          <span className="navbar-brand-full" width="89" height="25">My Experiment</span>  
+          <span className="navbar-brand-minimized" width="30" height="30">MyE</span>
         </a>
 
         <AppSidebarToggler className="d-md-down-none" display="lg" />
@@ -33,7 +54,8 @@ class DefaultHeader extends Component {
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
               <DropdownItem><i className="fa fa-file"></i> Statistics</DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.logout} ><i className="fa fa-lock"></i> Logout</DropdownItem>
+        
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>

@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
+import Auth from '../../../Auth';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {  Redirect } from 'react-router-dom';
+
 
 class Login extends Component {
+  state = {
+    redirectToReferrer: false
+  };
+
+  login = () => {
+    Auth.authenticate(() => {
+      this.setState({ redirectToReferrer: true });
+    });
+  };
+
   render() {
+    const { from } = { from: { pathname: "/" } };
+    const { redirectToReferrer } = this.state;
+
+    if (redirectToReferrer) {
+      return <Redirect to={from} />;
+    }
+
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -32,7 +52,7 @@ class Login extends Component {
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
+                          <Button onClick={this.login} color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>
@@ -41,16 +61,7 @@ class Login extends Component {
                     </Form>
                   </CardBody>
                 </Card>
-                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
-                  <CardBody className="text-center">
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
-                      <Button color="primary" className="mt-3" active>Register Now!</Button>
-                    </div>
-                  </CardBody>
-                </Card>
+                
               </CardGroup>
             </Col>
           </Row>
