@@ -3,6 +3,7 @@ import Loadable from 'react-loadable'
 
 import DefaultLayout from './containers/DefaultLayout';
 
+
 function Loading() {
   return <div>Loading...</div>;
 }
@@ -13,9 +14,17 @@ const Dashboard = Loadable({
   loading: Loading,
 });
 
+const Customers = Loadable({
+  loader: () => import('./views/Customers'),
+  loading: Loading,
+});
+
+
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/general', name: 'General', component: Dashboard },
+  { path: '/customers', name: 'Customers', component: Customers },
+  
 ];
 
 export default routes;
