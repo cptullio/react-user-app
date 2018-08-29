@@ -15,17 +15,27 @@ const defaultProps = {};
 
 
 class DefaultHeader extends Component {
-  state = {
-    redirect: false
-  }
-  constructor(){
-    super()
+  constructor(props){
+    super(props);
+    
+    this.state = {
+      redirect: false
+    }
+    this.updateAppState = this.updateAppState.bind(this);
     this.logout = this.logout.bind(this);
   }
+  
+  updateAppState(){
+    this.props.updateAppState();
+  }
+  
+  
   
   logout(){
     Auth.signout();
     this.setState({ redirect: true });
+    this.updateAppState();
+    //this.props.updateLoginState();
   }
 
   render() {
@@ -34,7 +44,7 @@ class DefaultHeader extends Component {
     const { redirect } = this.state;
 
     if (redirect) {
-      return <Redirect to='/login'/>;
+      return <Redirect to='/'/>;
     }
 
     return (

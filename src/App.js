@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 // Styles
 // CoreUI Icons Set
@@ -25,15 +25,29 @@ import Auth from './Auth';
 
 
 class App extends Component {
-
-  
-  state = {
-    authed: false,
+constructor(props){
+  super(props);
+  this.state = {
+    authed: true,
     loading: true,
   }
+
+  this.updateLoginState = this.updateLoginState.bind(this);
+ // this.filterUser = this.filterUser.bind(this);
+}
+  
+ 
   componentDidMount () {
+  console.log(this.state);
+
+    this.updateLoginState();
+  }
+
+  updateLoginState()
+  {
     Auth.isAuthenticated().then((user) => {
       if (user) {
+        console.log('atualizando login State');
         this.setState({
           authed: true,
           loading: false,
@@ -44,26 +58,24 @@ class App extends Component {
           loading: false
         })
       }
-    })
+    });
   }
-  componentWillUnmount () {
-    this.removeListener()
+
+  filterUser(filterValue){
+    alert(filterValue);
   }
- 
 
   render() {
+    console.log('render called', this.state.authed);
     return (
-      <HashRouter>
+      <BrowserRouter>
         <Switch>
-          <Route exact path="/login" name="Login Page" component={Login} />
+          <Route exact path="/login" component={() => <Login isAuthenticated={this.state.authed} updateAppState={this.updateLoginState}  />} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
-          <PrivateRoute path="/" isAuthenticated={this.state.authed} name="home" component={DefaultLayout} ></PrivateRoute>
-  
-            
-          
+          <PrivateRoute path="/" isAuthenticated={this.state.authed} name="home" component={ () => <DefaultLayout updateAppState={this.updateLoginState} ></DefaultLayout>  } ></PrivateRoute>
         </Switch>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }

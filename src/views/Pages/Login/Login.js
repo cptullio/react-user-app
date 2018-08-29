@@ -1,28 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component ,observer} from 'react';
 import Auth from '../../../Auth';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import {  Redirect } from 'react-router-dom';
-
+import {  Redirect,withRouter } from 'react-router-dom';
 
 class Login extends Component {
-  state = {
-    redirectToReferrer: false
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      redirectToReferrer: false
+    };
+      	this.login = this.login.bind(this);
+        this.updateAppState = this.updateAppState.bind(this);
+  }
+  
+  updateAppState(){
+    this.props.updateAppState();
+  }
 
-  login = (event) => {
-    event.preventDefault();
+  login = () => {
     Auth.authenticate('admin','admin',() => {
+      this.updateAppState();
       this.setState({ redirectToReferrer: true });
     });
   };
 
   render() {
-    const { from } = { from: { pathname: "/" } };
     const { redirectToReferrer } = this.state;
+    
 
-    if (redirectToReferrer) {
-      return <Redirect to={from} />;
+
+    if (redirectToReferrer || this.props.isAuthenticated) {
+      console.log("redirecionando");
+      return <Redirect from='/' to='/general' />
     }
+    
 
     return (
       <div className="app flex-row align-items-center">
@@ -72,4 +83,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login)
