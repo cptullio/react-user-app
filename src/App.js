@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 // Styles
 // CoreUI Icons Set
@@ -68,14 +68,14 @@ constructor(props){
   render() {
     console.log('render called', this.state.authed);
     return (
-      <BrowserRouter>
+      <HashRouter>
         <Switch>
           <Route exact path="/login" component={() => <Login isAuthenticated={this.state.authed} updateAppState={this.updateLoginState}  />} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
           <PrivateRoute path="/" isAuthenticated={this.state.authed} name="home" component={ () => <DefaultLayout updateAppState={this.updateLoginState} ></DefaultLayout>  } ></PrivateRoute>
         </Switch>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }
