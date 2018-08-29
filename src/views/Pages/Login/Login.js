@@ -1,39 +1,64 @@
-import React, { Component ,observer} from 'react';
+import React, { Component } from 'react';
 import Auth from '../../../Auth';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import {  Redirect,withRouter } from 'react-router-dom';
+import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Redirect, withRouter } from 'react-router-dom';
 
 class Login extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+
     this.state = {
-      redirectToReferrer: false
-    };
-      	this.login = this.login.bind(this);
-        this.updateAppState = this.updateAppState.bind(this);
+      redirectToReferrer: false,
+      username: '',
+      password: '',
+      failMessage: '',
+      failMessageDisplay: false,
+    }
+    this.login = this.login.bind(this);
+    this.updateAppState = this.updateAppState.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
   }
-  
-  updateAppState(){
+
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  onDismiss() {
+    this.setState({ failMessageDisplay: false });
+  }
+
+  updateAppState() {
     this.props.updateAppState();
   }
 
   login = () => {
-    Auth.authenticate('admin','admin',() => {
+
+    if (this.state.username.length < 2 || this.state.password < 2) {
+      this.setState({ failMessage: "Login/Password invalid.", failMessageDisplay: true });
+
+      return;
+    }
+
+    Auth.authenticate(this.state.username, this.state.password).then(x => {
       this.updateAppState();
       this.setState({ redirectToReferrer: true });
+    }).catch(err => {
+      this.setState({ failMessage: "Login/Password invalid.", failMessageDisplay: true });
     });
+
+
+
+
   };
 
   render() {
-    const { redirectToReferrer } = this.state;
-    
+    const { username, password, redirectToReferrer, failMessage } = this.state;
 
 
     if (redirectToReferrer || this.props.isAuthenticated) {
-      console.log("redirecionando");
-      return <Redirect from='/' to='/general' />
+      return <Redirect to='/general' />
     }
-    
 
     return (
       <div className="app flex-row align-items-center">
@@ -43,6 +68,12 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
+
+
+                    <Alert color="warning" isOpen={this.state.failMessageDisplay} toggle={this.onDismiss}>
+                      {failMessage}
+                    </Alert>
+
                     <Form>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
@@ -52,7 +83,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input type="text" name="username" id="username" value={username} placeholder="Username" onChange={this.onChange} autoComplete="username" />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -60,7 +91,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input type="password" name="password" id="password" value={password} placeholder="Password" onChange={this.onChange} autoComplete="current-password" />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
@@ -73,7 +104,7 @@ class Login extends Component {
                     </Form>
                   </CardBody>
                 </Card>
-                
+
               </CardGroup>
             </Col>
           </Row>

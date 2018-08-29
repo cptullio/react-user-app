@@ -21,7 +21,6 @@ import routes from '../../routes';
 import DefaultAside from './DefaultAside';
 import DefaultFooter from './DefaultFooter';
 import DefaultHeader from './DefaultHeader';
-import PrivateRoute from '../../privateRoute';
 
 class DefaultLayout extends Component {
   constructor(props){

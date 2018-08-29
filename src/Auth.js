@@ -1,5 +1,4 @@
 import request from 'superagent';
-import { promises } from 'fs';
 const urlLogin = "http://localhost:3001/api/account/";
 const urlMe = "http://localhost:3001/api/account/me";
 
@@ -23,18 +22,19 @@ const Auth = {
     });
 
   },
-  authenticate(username, password, cb) {
-    request
-      .post(urlLogin)
-      .send({ name: username, password: password })
-      .set('Accept', 'application/json')
-      .then(res => {
-        console.log(res.body.token);
-        localStorage.setItem('token', res.body.token);
-        cb();
-      });
-
-
+  authenticate(username, password) {
+    return new Promise((resolve, reject) => {
+      request
+        .post(urlLogin)
+        .send({ name: username, password: password })
+        .set('Accept', 'application/json')
+        .then(res => {
+          localStorage.setItem('token', res.body.token);
+          resolve(true);
+        }).catch(err => {
+          reject(err);
+        });
+   });
   },
   signout() {
     localStorage.setItem('token', '');

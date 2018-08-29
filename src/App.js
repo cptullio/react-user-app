@@ -18,7 +18,6 @@ import { DefaultLayout } from './containers';
 // Pages
 import { Login, Page404, Page500 } from './views/Pages';
 import PrivateRoute from './privateRoute';
-import Customers from './views/Customers/Customers';
 import Auth from './Auth';
 
 // import { renderRoutes } from 'react-router-config';
