@@ -1,11 +1,41 @@
+import request from 'superagent';
+import { promises } from 'fs';
+const urlLogin = "http://localhost:3001/api/account/";
+const urlMe = "http://localhost:3001/api/account/me";
+
+
 const Auth = {
-    isAuthenticated(){
-      let token = localStorage.getItem('token');
-      return token && token.length > 10;
+     isAuthenticated(cb){
+       return new Promise( (resolve,reject) =>{
+          let token = localStorage.getItem('token');
+          if (!token)
+          {
+            resolve(false);
+          }
+          else{
+
+          
+          request
+  .get(urlMe)
+  .set('Authorization', 'Bearer '+ token)
+  .set('Accept', 'application/json').then(x=>{
+      resolve(x.body.user.permissions.length >0);
+  }).catch(x=>resolve(false))
+}
+  });
+
     },
-    authenticate(cb) {
-      localStorage.setItem('token','123456789022345');
-      cb();
+    authenticate(username, password, cb) {
+      request
+      .post(urlLogin)
+      .send({ name: username, password: password })
+      .set('Accept', 'application/json')
+      .then(res => {
+        localStorage.setItem('token',res.body.token);
+        cb();
+      });
+      
+      
     },
     signout() {
       localStorage.setItem('token','');

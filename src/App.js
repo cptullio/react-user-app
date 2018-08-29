@@ -18,10 +18,39 @@ import { DefaultLayout } from './containers';
 // Pages
 import { Login, Page404, Page500 } from './views/Pages';
 import PrivateRoute from './privateRoute';
+import Customers from './views/Customers/Customers';
+import Auth from './Auth';
 
 // import { renderRoutes } from 'react-router-config';
 
+
 class App extends Component {
+
+  
+  state = {
+    authed: false,
+    loading: true,
+  }
+  componentDidMount () {
+    Auth.isAuthenticated().then((user) => {
+      if (user) {
+        this.setState({
+          authed: true,
+          loading: false,
+        })
+      } else {
+        this.setState({
+          authed: false,
+          loading: false
+        })
+      }
+    })
+  }
+  componentWillUnmount () {
+    this.removeListener()
+  }
+ 
+
   render() {
     return (
       <HashRouter>
@@ -29,7 +58,10 @@ class App extends Component {
           <Route exact path="/login" name="Login Page" component={Login} />
           <Route exact path="/404" name="Page 404" component={Page404} />
           <Route exact path="/500" name="Page 500" component={Page500} />
-          <PrivateRoute path="/" name="home" component={DefaultLayout} ></PrivateRoute>
+          <PrivateRoute path="/" isAuthenticated={this.state.authed} name="home" component={DefaultLayout} ></PrivateRoute>
+  
+            
+          
         </Switch>
       </HashRouter>
     );

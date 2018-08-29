@@ -9,8 +9,9 @@ class Login extends Component {
     redirectToReferrer: false
   };
 
-  login = () => {
-    Auth.authenticate(() => {
+  login = (event) => {
+    event.preventDefault();
+    Auth.authenticate('admin','admin',() => {
       this.setState({ redirectToReferrer: true });
     });
   };
