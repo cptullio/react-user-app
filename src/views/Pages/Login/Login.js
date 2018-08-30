@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Auth from '../../../Auth';
-import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import Auth from '../../../services/Auth';
+
+import { Alert, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { Redirect, withRouter } from 'react-router-dom';
 
 class Login extends Component {
@@ -74,7 +75,6 @@ class Login extends Component {
                       {failMessage}
                     </Alert>
 
-                    <Form>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
@@ -101,7 +101,6 @@ class Login extends Component {
                           <Button color="link" className="px-0">Forgot password?</Button>
                         </Col>
                       </Row>
-                    </Form>
                   </CardBody>
                 </Card>
 

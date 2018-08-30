@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import {  AppHeaderDropdown,  AppSidebarToggler } from '@coreui/react';
 
 import {  Redirect } from 'react-router-dom';
-import Auth from '../../Auth';
+import Auth from '../../services/Auth';
+
 
 const propTypes = {
   children: PropTypes.node,

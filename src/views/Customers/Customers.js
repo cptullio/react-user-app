@@ -8,6 +8,7 @@ import {
   Row,
   Table,
 } from 'reactstrap';
+import CustomerList from '../../components/customersList';
 
 
 
@@ -47,7 +48,7 @@ class Customers extends Component {
                 Customers
               </CardHeader>
               <CardBody>
-                    
+                <CustomerList></CustomerList>
                 <br />
                 <Table hover responsive className="table-outline mb-0 d-none d-sm-table">
                   <thead className="thead-light">

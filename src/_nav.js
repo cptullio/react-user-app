@@ -17,6 +17,12 @@ export default {
         variant: 'info',
         text: 'NEW',
       },
-    }
+    },
+    {
+      name: 'Base',
+      url: '/base',
+      icon: 'icon-speedometer'
+
+    },
   ],
 };
